@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gil — panel dźwięków</title>
+<style>
+  :root { --bg:#0f1419; --card:#1a222c; --line:#2b3644; --text:#e8edf2; --mute:#93a1b0; --acc:#3aa0ff; --ok:#3ecf8e; --warn:#f0b429; --bad:#ff6b6b; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; padding-bottom:110px; }
+  header { padding:14px 16px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; border-bottom:1px solid var(--line); }
+  h1 { font-size:18px; margin:0; flex:1 1 200px; }
+  #status { color:var(--mute); font-size:14px; }
+  button, .btn { font:inherit; color:var(--text); background:#263241; border:1px solid var(--line); border-radius:10px; padding:10px 14px; cursor:pointer; }
+  button:hover { border-color:var(--acc); }
+  main { max-width:900px; margin:0 auto; padding:0 12px; }
+  h2 { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin:22px 4px 8px; }
+  .cue { background:var(--card); border:1px solid var(--line); border-radius:14px; margin-bottom:10px; display:grid; grid-template-columns:64px 1fr auto; gap:12px; align-items:center; padding:10px; position:relative; overflow:hidden; }
+  .cue.next { border-color:var(--warn); }
+  .cue.playing { border-color:var(--ok); }
+  .play { width:64px; height:64px; border-radius:12px; font-size:22px; font-weight:700; background:#22405e; border-color:#2f5f8e; }
+  .cue.playing .play { background:#1f5a40; border-color:var(--ok); }
+  .cue.missing .play { background:#2a2f36; border-color:var(--line); color:var(--mute); }
+  .title { font-weight:650; }
+  .title small { color:var(--mute); font-weight:400; margin-left:6px; }
+  .desc { color:var(--mute); font-size:14.5px; margin-top:2px; }
+  details { margin-top:4px; font-size:14px; }
+  summary { color:var(--acc); cursor:pointer; width:max-content; }
+  details p { margin:6px 0 2px; color:#cfd8e2; }
+  .side { display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+  .side button { padding:6px 10px; font-size:13px; }
+  .tag { font-size:12px; padding:2px 8px; border-radius:99px; border:1px solid var(--line); color:var(--mute); white-space:nowrap; }
+  .tag.ok { color:var(--ok); border-color:#245c45; } .tag.no { color:var(--bad); border-color:#6b2f2f; }
+  .bar { position:absolute; left:0; bottom:0; height:4px; width:0; background:var(--ok); }
+  footer { position:fixed; left:0; right:0; bottom:0; background:#0b0f14ee; border-top:1px solid var(--line); padding:12px; display:flex; gap:10px; justify-content:center; }
+  footer button { flex:1; max-width:440px; height:64px; font-size:18px; font-weight:700; }
+  #stop { background:#5a1f1f; border-color:#8e2f2f; }
+  #nextBtn { background:#1f5a40; border-color:var(--ok); }
+  @media (max-width:560px) { .cue { grid-template-columns:56px 1fr; } .play { width:56px; height:56px; } .side { grid-column:1 / -1; flex-direction:row; justify-content:flex-end; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Gil — Dni Otwarte Gillette</h1>
+  <span id="status">Ładuję…</span>
+  <label class="btn">Wgraj pliki (01…20)<input id="bulk" type="file" accept="audio/*" multiple hidden></label>
+</header>
+<main id="list"></main>
+<footer>
+  <button id="stop">■ STOP</button>
+  <button id="nextBtn">▶ Następny</button>
+</footer>
+<input id="single" type="file" accept="audio/*" hidden>
+<script>
+const $ = s => document.querySelector(s);
+let cues = [], blobs = {}, audio = new Audio(), playingId = null, nextId = 1, uploadFor = null;
+const main = () => cues.filter(c => c.group !== 'Dodatkowe');
+
+async function load() {
+  cues = await (await fetch('/api/cues')).json();
+  render();
+  // Pobieramy wszystkie nagrania do pamięci, żeby grały także przy zerwanym internecie.
+  let done = 0; const have = cues.filter(c => c.hasAudio);
+  setStatus(have.length ? `Pobieram nagrania 0/${have.length}…` : `Brak nagrań — wgraj pliki`);
+  await Promise.all(have.map(async c => {
+    try {
+      const b = await (await fetch(`/audio/${c.id}?v=${c.v}`)).blob();
+      if (blobs[c.id]) URL.revokeObjectURL(blobs[c.id]);
+      blobs[c.id] = URL.createObjectURL(b);
+    } catch (e) { c.hasAudio = false; }
+    setStatus(`Pobieram nagrania ${++done}/${have.length}…`);
+  }));
+  const n = cues.filter(c => blobs[c.id]).length;
+  setStatus(`Gotowe: ${n}/${cues.length} nagrań w pamięci`);
+  render();
+}
+function setStatus(t) { $('#status').textContent = t; }
+
+function render() {
+  const el = $('#list'); el.innerHTML = '';
+  let group = null;
+  for (const c of cues) {
+    if (c.group !== group) { group = c.group; const h = document.createElement('h2'); h.textContent = group; el.appendChild(h); }
+    const ready = !!blobs[c.id];
+    const d = document.createElement('div');
+    d.className = 'cue' + (ready ? '' : ' missing') + (c.id === playingId ? ' playing' : '') + (c.id === nextId && playingId === null ? ' next' : '');
+    d.id = 'cue' + c.id;
+    d.innerHTML = `
+      <button class="play" title="Odtwórz">${c.id === playingId ? '■' : c.id}</button>
+      <div>
+        <div class="title"></div><div class="desc"></div>
+        <details><summary>Pełny tekst</summary><p></p></details>
+      </div>
+      <div class="side">
+        <span class="tag ${ready ? 'ok' : 'no'}">${ready ? 'nagranie jest' : 'brak nagrania'}</span>
+        <button class="up">${ready ? 'Podmień' : 'Wgraj'}</button>
+      </div><div class="bar"></div>`;
+    d.querySelector('.title').innerHTML = `<span></span><small>${c.slide !== '—' ? 'slajd ' + c.slide : ''}</small>`;
+    d.querySelector('.title span').textContent = c.title;
+    d.querySelector('.desc').textContent = c.desc;
+    d.querySelector('details p').textContent = c.text;
+    d.querySelector('.play').onclick = () => c.id === playingId ? stop() : play(c.id);
+    d.querySelector('.up').onclick = () => { uploadFor = c.id; $('#single').click(); };
+    el.appendChild(d);
+  }
+  const nx = cues.find(c => c.id === nextId);
+  $('#nextBtn').textContent = nx ? `▶ Następny: ${nx.id}. ${nx.title}` : '▶ Koniec scenariusza';
+}
+
+function play(id) {
+  if (!blobs[id]) { setStatus(`Komenda ${id} nie ma nagrania`); return; }
+  audio.pause(); audio.src = blobs[id]; audio.currentTime = 0; audio.play();
+  playingId = id;
+  const m = main(), i = m.findIndex(c => c.id === id);
+  if (i >= 0) nextId = m[i + 1] ? m[i + 1].id : null;
+  render();
+}
+function stop() { audio.pause(); playingId = null; render(); }
+audio.onended = stop;
+audio.ontimeupdate = () => {
+  const b = document.querySelector('#cue' + playingId + ' .bar');
+  if (b && audio.duration) b.style.width = (100 * audio.currentTime / audio.duration) + '%';
+};
+$('#stop').onclick = stop;
+$('#nextBtn').onclick = () => { if (nextId) play(nextId); };
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Space') { e.preventDefault(); playingId ? stop() : (nextId && play(nextId)); }
+  if (e.code === 'Escape') stop();
+});
+
+async function send(files, id) {
+  const fd = new FormData(); for (const f of files) fd.append('files', f);
+  setStatus('Wgrywam…');
+  const r = await (await fetch('/api/upload' + (id ? '?id=' + id : ''), { method: 'POST', body: fd })).json();
+  await load();
+  if (r.skipped.length) alert('Pominięte pliki:\n' + r.skipped.join('\n'));
+}
+$('#bulk').onchange = e => { send(e.target.files); e.target.value = ''; };
+$('#single').onchange = e => { send(e.target.files, uploadFor); e.target.value = ''; };
+load();
+</script>
+</body>
+</html>
