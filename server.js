@@ -5,7 +5,6 @@ const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
-const PASSWORD = process.env.PANEL_PASSWORD || '';
 const BUILTIN_DIR = path.join(__dirname, 'audio'); // nagrania dołączone do apki; wgrane z panelu mają pierwszeństwo
 const EXTS = ['.mp3', '.wav', '.m4a', '.ogg', '.opus', '.aac', '.flac', '.webm'];
 const cues = require('./cues.json');
@@ -13,15 +12,6 @@ const ids = new Set(cues.map(c => c.id));
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 const app = express();
-
-if (PASSWORD) {
-  app.use((req, res, next) => {
-    const h = req.headers.authorization || '';
-    const pass = h.startsWith('Basic ') ? Buffer.from(h.slice(6), 'base64').toString().split(':').slice(1).join(':') : null;
-    if (pass === PASSWORD) return next();
-    res.set('WWW-Authenticate', 'Basic realm="Panel"').status(401).send('Podaj hasło');
-  });
-}
 
 const pad = id => String(id).padStart(2, '0');
 function findIn(dir, id) {
