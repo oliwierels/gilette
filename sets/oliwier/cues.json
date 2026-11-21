@@ -1,0 +1,74 @@
+[
+ {
+  "id": 1,
+  "group": "Start",
+  "title": "Wejście Zenka",
+  "desc": "Spóźniony prezes przeprasza i żartuje z nieuzgodnionych podwyżek.",
+  "slide": "—",
+  "text": "Szczęść Boże, przepraszam za spóźnienie, zarząd do ostatniej chwili obradował nad waszymi podwyżkami! Podwyżki wyszły nieuzgodnione, bo nie mamy waszych pieniędzy… może kiedyś by były. Ale zło w dobro przerabiamy, więc siadam z wami, bo przynajmniej piwo jest uzgodnione!"
+ },
+ {
+  "id": 2,
+  "group": "Piosenki",
+  "title": "Zapowiedź: piosenka dla załogi",
+  "desc": "Dedykacja od Zarządu dla pracowników Przeróbki.",
+  "slide": "—",
+  "text": "A teraz dedykacja od Zarządu dla wszystkich pracowników Przeróbki, prosto z serca i prosto z budżetu: Poszła kasa!"
+ },
+ {
+  "id": 3,
+  "group": "Piosenki",
+  "title": "PIOSENKA: Poszła kasa (disco polo)",
+  "desc": "Piosenka od Zarządu dla załogi.",
+  "slide": "—",
+  "text": "Poszła kasa, poszła w tan, dla Przeróbki wszystko dam! Zło w dobro przerabiamy, dziś do rana się bawimy!"
+ },
+ {
+  "id": 4,
+  "group": "Piosenki",
+  "title": "Zapowiedź: piosenka dla Przewodniczącego",
+  "desc": "Niespodzianka dla Przewodniczącego Niemca.",
+  "slide": "—",
+  "text": "Panie Przewodniczący, ta jest specjalnie dla pana, prosto z Przeróbki! Jedzie na Bogdanka!"
+ },
+ {
+  "id": 5,
+  "group": "Piosenki",
+  "title": "PIOSENKA: Jedzie na Bogdanka (biesiada)",
+  "desc": "Śląska biesiada dla Przewodniczącego.",
+  "slide": "—",
+  "text": "Jedzie, jedzie, na Bogdanka jedzie, motorek terkocze, kaj on jest, tam szpas bydzie!"
+ },
+ {
+  "id": 6,
+  "group": "Finał",
+  "title": "Toast",
+  "desc": "Toast za załogę Przeróbki i Barbórkę.",
+  "slide": "—",
+  "text": "Za załogę Przeróbki, za Barbórkę i za to, żeby węgiel sam się ładował, a piwo nigdy się nie kończyło! Zło w dobro przerabiamy! Szczęść Boże!"
+ },
+ {
+  "id": 7,
+  "group": "Finał",
+  "title": "Pożegnanie",
+  "desc": "Zenek dziękuje i życzy udanej Barbórki.",
+  "slide": "—",
+  "text": "Dziękuję wam za wspaniałą biesiadę! Udanej Barbórki, szczęść Boże, i do zobaczenia, najlepiej przy podwyżkach!"
+ },
+ {
+  "id": 8,
+  "group": "Dodatkowe",
+  "title": "Hasło Przeróbki",
+  "desc": "Krótki okrzyk.",
+  "slide": "—",
+  "text": "Zło w dobro przerabiamy!"
+ },
+ {
+  "id": 9,
+  "group": "Dodatkowe",
+  "title": "Zapowiedź kabaretu Rak",
+  "desc": "Oddanie sceny Hankemu i Kozłowskiemu.",
+  "slide": "—",
+  "text": "A teraz scena dla mistrzów! Kabaret Rak, Krzysztof Hanke i Andrzej Kozłowski! Brawa!"
+ }
+]

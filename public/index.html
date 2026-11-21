@@ -3,13 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Karczma — panel dźwięków</title>
+<title>Panel dźwięków</title>
 <style>
   :root { --bg:#0f1419; --card:#1a222c; --line:#2b3644; --text:#e8edf2; --mute:#93a1b0; --acc:#3aa0ff; --ok:#3ecf8e; --warn:#f0b429; --bad:#ff6b6b; }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--text); font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; padding-bottom:110px; }
   header { padding:14px 16px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; border-bottom:1px solid var(--line); }
   h1 { font-size:18px; margin:0; flex:1 1 200px; }
+  #tabs { display:flex; gap:6px; }
+  #tabs button { padding:8px 16px; font-weight:650; }
+  #tabs button.on { background:var(--acc); border-color:var(--acc); color:#06121f; }
   #status { color:var(--mute); font-size:14px; }
   button, .btn { font:inherit; color:var(--text); background:#263241; border:1px solid var(--line); border-radius:10px; padding:10px 14px; cursor:pointer; }
   button:hover { border-color:var(--acc); }
@@ -41,9 +44,10 @@
 </head>
 <body>
 <header>
-  <h1>Karczma Piwna — 21.11</h1>
+  <nav id="tabs"></nav>
+  <h1 id="title"></h1>
   <span id="status">Ładuję…</span>
-  <label class="btn">Wgraj pliki (01…07)<input id="bulk" type="file" accept="audio/*" multiple hidden></label>
+  <label class="btn">Wgraj pliki<input id="bulk" type="file" accept="audio/*" multiple hidden></label>
 </header>
 <main id="list"></main>
 <footer>
@@ -54,22 +58,46 @@
 <script>
 const $ = s => document.querySelector(s);
 let cues = [], blobs = {}, audio = new Audio(), playingId = null, nextId = 1, uploadFor = null;
+let sets = [], set = null, loadSeq = 0;
+function saved() { try { return localStorage.getItem('set'); } catch (e) { return null; } }
+async function init() {
+  sets = await (await fetch('/api/sets')).json();
+  const want = location.hash.slice(1) || saved();
+  choose((sets.find(s => s.name === want) || sets[0]).name);
+}
+// Przełączenie zestawu zatrzymuje dźwięk i ładuje komendy oraz nagrania drugiej osoby.
+function choose(name) {
+  set = name; audio.pause(); playingId = null; nextId = 1;
+  for (const k in blobs) URL.revokeObjectURL(blobs[k]);
+  blobs = {}; cues = []; setStatus('Ładuję…'); render();
+  try { localStorage.setItem('set', name); } catch (e) {}
+  history.replaceState(null, '', '#' + name);
+  const cur = sets.find(s => s.name === name);
+  $('#title').textContent = cur.title; document.title = cur.label + ' — panel dźwięków';
+  const t = $('#tabs'); t.innerHTML = '';
+  for (const s of sets) { const b = document.createElement('button'); b.textContent = s.label; b.className = s.name === name ? 'on' : ''; b.onclick = () => s.name !== set && choose(s.name); t.appendChild(b); }
+  load();
+}
 const main = () => cues.filter(c => c.group !== 'Dodatkowe');
 
 async function load() {
-  cues = await (await fetch('/api/cues')).json();
+  const seq = ++loadSeq, mySet = set, got = {};
+  const list = await (await fetch(`/api/${mySet}/cues`)).json();
+  if (seq !== loadSeq) return;
+  cues = list; if (!cues.some(c => c.id === nextId)) nextId = cues.length ? cues[0].id : null;
   render();
   // Pobieramy wszystkie nagrania do pamięci, żeby grały także przy zerwanym internecie.
   let done = 0; const have = cues.filter(c => c.hasAudio);
   setStatus(have.length ? `Pobieram nagrania 0/${have.length}…` : `Brak nagrań — wgraj pliki`);
   await Promise.all(have.map(async c => {
     try {
-      const b = await (await fetch(`/audio/${c.id}?v=${c.v}`)).blob();
-      if (blobs[c.id]) URL.revokeObjectURL(blobs[c.id]);
-      blobs[c.id] = URL.createObjectURL(b);
+      const b = await (await fetch(`/audio/${mySet}/${c.id}?v=${c.v}`)).blob();
+      got[c.id] = URL.createObjectURL(b);
     } catch (e) { c.hasAudio = false; }
-    setStatus(`Pobieram nagrania ${++done}/${have.length}…`);
+    if (seq === loadSeq) setStatus(`Pobieram nagrania ${++done}/${have.length}…`);
   }));
+  if (seq !== loadSeq) { for (const k in got) URL.revokeObjectURL(got[k]); return; }
+  for (const k in got) { if (blobs[k] && k != playingId) URL.revokeObjectURL(blobs[k]); blobs[k] = got[k]; }
   const n = cues.filter(c => blobs[c.id]).length;
   setStatus(`Gotowe: ${n}/${cues.length} nagrań w pamięci`);
   render();
@@ -132,13 +160,13 @@ document.addEventListener('keydown', e => {
 async function send(files, id) {
   const fd = new FormData(); for (const f of files) fd.append('files', f);
   setStatus('Wgrywam…');
-  const r = await (await fetch('/api/upload' + (id ? '?id=' + id : ''), { method: 'POST', body: fd })).json();
+  const r = await (await fetch(`/api/${set}/upload` + (id ? '?id=' + id : ''), { method: 'POST', body: fd })).json();
   await load();
   if (r.skipped.length) alert('Pominięte pliki:\n' + r.skipped.join('\n'));
 }
 $('#bulk').onchange = e => { send(e.target.files); e.target.value = ''; };
 $('#single').onchange = e => { send(e.target.files, uploadFor); e.target.value = ''; };
-load();
+init();
 </script>
 </body>
 </html>
