@@ -20,6 +20,8 @@
   h2 { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin:22px 4px 8px; }
   .cue { background:var(--card); border:1px solid var(--line); border-radius:14px; margin-bottom:10px; display:grid; grid-template-columns:64px 1fr auto; gap:12px; align-items:center; padding:10px; position:relative; overflow:hidden; }
   .cue.next { border-color:var(--warn); }
+  .cue.manual { border-style:dashed; background:#161b22; }
+  .cue.manual .title span { color:var(--mute); }
   .cue.playing { border-color:var(--ok); }
   .play { width:64px; height:64px; border-radius:12px; font-size:22px; font-weight:700; background:#22405e; border-color:#2f5f8e; }
   .cue.playing .play { background:#1f5a40; border-color:var(--ok); }
@@ -116,7 +118,7 @@ function render() {
     if (c.group !== group) { group = c.group; const h = document.createElement('h2'); h.textContent = group; el.appendChild(h); }
     const ready = !!blobs[c.id];
     const d = document.createElement('div');
-    d.className = 'cue' + (ready ? '' : ' missing') + (c.id === playingId ? ' playing' : '') + (c.id === nextId && playingId === null ? ' next' : '');
+    d.className = 'cue' + (c.manual ? ' manual' : '') + (ready ? '' : ' missing') + (c.id === playingId ? ' playing' : '') + (c.id === nextId && playingId === null ? ' next' : '');
     d.id = 'cue' + c.id;
     d.innerHTML = `
       <button class="play" title="Odtwórz">${c.id === playingId ? '■' : c.id}</button>
