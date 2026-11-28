@@ -1,74 +1,13 @@
 [
- {
-  "id": 1,
-  "group": "Start",
-  "title": "Wejście Zenka",
-  "desc": "Spóźniony prezes przeprasza i żartuje z nieuzgodnionych podwyżek.",
-  "slide": "—",
-  "text": "Szczęść Boże, przepraszam za spóźnienie, zarząd do ostatniej chwili obradował nad waszymi podwyżkami! Podwyżki wyszły nieuzgodnione, bo nie mamy waszych pieniędzy… może kiedyś by były. Ale zło w dobro przerabiamy, więc siadam z wami, bo przynajmniej piwo jest uzgodnione!"
- },
- {
-  "id": 2,
-  "group": "Piosenki",
-  "title": "Zapowiedź: piosenka dla załogi",
-  "desc": "Dedykacja od Zarządu dla pracowników Przeróbki.",
-  "slide": "—",
-  "text": "A teraz dedykacja od Zarządu dla wszystkich pracowników Przeróbki, prosto z serca i prosto z budżetu: Poszła kasa!"
- },
- {
-  "id": 3,
-  "group": "Piosenki",
-  "title": "PIOSENKA: Poszła kasa (disco polo)",
-  "desc": "Piosenka od Zarządu dla załogi.",
-  "slide": "—",
-  "text": "Poszła kasa, poszła w tan, dla Przeróbki wszystko dam! Zło w dobro przerabiamy, dziś do rana się bawimy!"
- },
- {
-  "id": 4,
-  "group": "Piosenki",
-  "title": "Zapowiedź: piosenka dla Przewodniczącego",
-  "desc": "Niespodzianka dla Przewodniczącego Niemca.",
-  "slide": "—",
-  "text": "Panie Przewodniczący, ta jest specjalnie dla pana, prosto z Przeróbki! Jedzie na Bogdanka!"
- },
- {
-  "id": 5,
-  "group": "Piosenki",
-  "title": "PIOSENKA: Jedzie na Bogdanka (biesiada)",
-  "desc": "Śląska biesiada dla Przewodniczącego.",
-  "slide": "—",
-  "text": "Jedzie, jedzie, na Bogdanka jedzie, motorek terkocze, kaj on jest, tam szpas bydzie!"
- },
- {
-  "id": 6,
-  "group": "Finał",
-  "title": "Toast",
-  "desc": "Toast za załogę Przeróbki i Barbórkę.",
-  "slide": "—",
-  "text": "Za załogę Przeróbki, za Barbórkę i za to, żeby węgiel sam się ładował, a piwo nigdy się nie kończyło! Zło w dobro przerabiamy! Szczęść Boże!"
- },
- {
-  "id": 7,
-  "group": "Finał",
-  "title": "Pożegnanie",
-  "desc": "Zenek dziękuje i życzy udanej Barbórki.",
-  "slide": "—",
-  "text": "Dziękuję wam za wspaniałą biesiadę! Udanej Barbórki, szczęść Boże, i do zobaczenia, najlepiej przy podwyżkach!"
- },
- {
-  "id": 8,
-  "group": "Dodatkowe",
-  "title": "Hasło Przeróbki",
-  "desc": "Krótki okrzyk.",
-  "slide": "—",
-  "text": "Zło w dobro przerabiamy!"
- },
- {
-  "id": 9,
-  "group": "Dodatkowe",
-  "title": "Zapowiedź kabaretu Rak",
-  "desc": "Oddanie sceny Hankemu i Kozłowskiemu.",
-  "slide": "—",
-  "text": "A teraz scena dla mistrzów! Kabaret Rak, Krzysztof Hanke i Andrzej Kozłowski! Brawa!"
- }
+  {"id":1,"group":"Scenariusz","title":"Siemanko — przedstawienie się","desc":"Po tym, jak Grzegorz przedstawi „pana Skeytosa Niskobutosa”: Skajtek wita się i mówi, że coś niecoś potrafi (potem trik).","slide":"—","text":"Siemanko! Mówcie do mnie Skajtek. Postaram się pomóc Grzegorzowi. W końcu coś niecoś potrafię!"},
+  {"id":2,"group":"Scenariusz","title":"Dlaczego chciałem podziękować pani Alinie","desc":"Odpowiedź na pytanie Grzegorza, czemu Skajtek chciał osobiście wręczyć podziękowania pani Alinie Woszczak.","slide":"—","text":"Bo pani Alina robi to, o czym ja marzę od zawsze: rządzi wielkim ekranem i nikt jej nie odłącza od prądu! A tak serio, bez pani Aliny mielibyśmy tu dzisiaj czarny ekran. Ogromne brawa!"},
+  {"id":3,"group":"Scenariusz","title":"Logo Verde na piersi","desc":"Gdy Grzegorz mówi, że Skajtek nosi na piersi znak firmy Verde: wskazanie logo i podziękowanie panu Radosławowi.","slide":"—","text":"Verde! Noszę to logo na samym sercu, czyli tuż nad baterią. Panie Radosławie, dzięki panu tu jestem, więc te brawa są dla pana!"},
+  {"id":4,"group":"Scenariusz","title":"Pampers i ładowarka","desc":"Odpowiedź na żart Grzegorza o przerwie „na siku”, gdy pokaże ładowarkę i pampersa.","slide":"—","text":"Spokojnie, Grzegorzu! Pampers zostaw sobie, u mnie jedyny możliwy wyciek to wyciek danych. Ale ładowarkę trzymaj blisko, bo jak padnie mi bateria, to resztę gali poprowadzisz sam!"},
+  {"id":5,"group":"Scenariusz","title":"Pożegnanie i zdjęcia","desc":"Na koniec gali: podziękowanie, gratulacje dla nagrodzonych i zaproszenie do wspólnych zdjęć.","slide":"—","text":"Dziękuję, że mogłem być z wami! Gratuluję wszystkim nagrodzonym. A teraz zapraszam do wspólnych zdjęć, ja wychodzę dobrze na każdym, bo nigdy nie mrugam!"},
+  {"id":6,"group":"Dodatkowe","title":"RATUNEK: tego nie było w scenariuszu","desc":"Gdy prowadzący powie coś nieprzewidzianego: Skajtek „aktualizuje oprogramowanie” i kończy prośbą o brawa.","slide":"—","text":"Tego w scenariuszu nie miałem! Chwileczkę, aktualizuję oprogramowanie… Gotowe. Dalej nie wiem, co powiedzieć, ale wiem jedno: należą się brawa!"},
+  {"id":7,"group":"Dodatkowe","title":"RATUNEK: błąd 404 i żart","desc":"Gdy padnie pytanie, na które nie ma odpowiedzi: „błąd 404” i żart o robotach w maratonie na rolkach.","slide":"—","text":"Grzegorzu, na to mój procesor odpowiada: błąd czterysta cztery, odpowiedzi nie znaleziono. To może lepiej opowiem żart. Wiecie, dlaczego roboty nie startują w maratonie na rolkach? Bo po czterdziestu kilometrach wy szukacie mety, a my gniazdka!"},
+  {"id":8,"group":"Dodatkowe","title":"RATUNEK: mów dalej, potwierdzam","desc":"Gdy prowadzący się rozgada albo zagada do Skajtka bez pytania: komplement i oddanie mu głosu.","slide":"—","text":"Grzegorzu, ty tak pięknie mówisz, że aż mi się wentylatory włączyły. Mów dalej, ja potwierdzam wszystko!"},
+  {"id":9,"group":"Dodatkowe","title":"RATUNEK: bez komentarza","desc":"Na niewygodne albo zbyt osobiste pytanie: instrukcja obsługi zabrania odpowiadać.","slide":"—","text":"Bez komentarza! Moja instrukcja obsługi zabrania mi odpowiadać na takie pytania."},
+  {"id":10,"group":"Dodatkowe","title":"Gromkie brawa","desc":"Krótka prośba o brawa, pasuje po każdej dekoracji i podziękowaniu.","slide":"—","text":"A teraz poproszę o gromkie brawa!"},
+  {"id":11,"group":"Dodatkowe","title":"Tak jest, oczywiście!","desc":"Krótkie potwierdzenie, gdy prowadzący zapyta Skajtka o zgodę albo „prawda, Skajtku?”.","slide":"—","text":"Tak jest, oczywiście!"}
 ]
