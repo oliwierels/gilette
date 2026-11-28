@@ -150,6 +150,11 @@ function play(id) {
   playingId = id;
   const m = main(), i = m.findIndex(c => c.id === id);
   if (i >= 0) nextId = m[i + 1] ? m[i + 1].id : null;
+  else {
+    // Ręcznie puszczona kwestia ze scenariusza (np. kategoria oddana przez prowadzącego): „Następny” wskazuje pierwszą kwestię robota po niej.
+    const cur = cues.find(c => c.id === id), pos = cues.indexOf(cur);
+    if (cur && cur.group !== 'Dodatkowe') { const nx = cues.slice(pos + 1).find(c => m.includes(c)); nextId = nx ? nx.id : null; }
+  }
   render();
 }
 function stop() { audio.pause(); playingId = null; render(); }
