@@ -82,7 +82,8 @@ function choose(name) {
   for (const s of sets) { const b = document.createElement('button'); b.textContent = s.label; b.className = s.name === name ? 'on' : ''; b.onclick = () => s.name !== set && choose(s.name); t.appendChild(b); }
   load();
 }
-const main = () => cues.filter(c => c.group !== 'Dodatkowe');
+// Komendy spoza głównej kolejności (grupa Dodatkowe albo znacznik manual) odpala się tylko ręcznie.
+const main = () => cues.filter(c => c.group !== 'Dodatkowe' && !c.manual);
 
 async function load() {
   const seq = ++loadSeq, mySet = set, got = {};
