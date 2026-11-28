@@ -27,6 +27,7 @@
   .title { font-weight:650; }
   .title small { color:var(--mute); font-weight:400; margin-left:6px; }
   .desc { color:var(--mute); font-size:14.5px; margin-top:2px; }
+  .act { color:var(--warn); font-size:14.5px; margin-top:3px; }
   details { margin-top:4px; font-size:14px; }
   summary { color:var(--acc); cursor:pointer; width:max-content; }
   details p { margin:6px 0 2px; color:#cfd8e2; }
@@ -116,7 +117,7 @@ function render() {
     d.innerHTML = `
       <button class="play" title="Odtwórz">${c.id === playingId ? '■' : c.id}</button>
       <div>
-        <div class="title"></div><div class="desc"></div>
+        <div class="title"></div><div class="desc"></div><div class="act"></div>
         <details><summary>Pełny tekst</summary><p></p></details>
       </div>
       <div class="side">
@@ -126,6 +127,7 @@ function render() {
     d.querySelector('.title').innerHTML = `<span></span><small>${c.slide !== '—' ? 'slajd ' + c.slide : ''}</small>`;
     d.querySelector('.title span').textContent = c.title;
     d.querySelector('.desc').textContent = c.desc;
+    const act = d.querySelector('.act'); if (c.action) act.textContent = 'RUCH: ' + c.action; else act.remove();
     d.querySelector('details p').textContent = c.text;
     d.querySelector('.play').onclick = () => c.id === playingId ? stop() : play(c.id);
     d.querySelector('.up').onclick = () => { uploadFor = c.id; $('#single').click(); };
