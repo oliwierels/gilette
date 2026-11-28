@@ -19,5 +19,6 @@ Na Railway: deploy z repo, start `npm start`. Volume w `/data` ze zmienną `DATA
 ## Obsługa
 - Spacja lub „Następny” gra kolejną komendę; komendy z grupy „Dodatkowe” odpala się tylko ręcznie.
 - STOP, Esc albo ponowne kliknięcie grającej komendy przerywa.
+- Pauza (przycisk albo klawisz P) wstrzymuje nagranie w miejscu i wznawia od tego samego momentu — przydatne przy listach nagrodzonych.
 - Po otwarciu panel pobiera nagrania wybranego zestawu do pamięci, więc grają także po zerwaniu internetu (do odświeżenia strony lub zmiany zakładki).
 - „Wgraj pliki” przyjmuje wiele plików naraz; numer na początku nazwy pliku przypisuje nagranie do komendy w bieżącym zestawie.
